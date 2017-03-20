@@ -1,5 +1,5 @@
 {
-    "name": "alphayax/filesystem_rss",
+    "name": "alphayax/rss_fs",
     "description": "Create a RSS feed from filesystem directory",
     "type": "library",
     "license": "LGPL 3",
