@@ -1,0 +1,19 @@
+{
+    "name": "alphayax/filesystem_rss",
+    "description": "Create a RSS feed from filesystem directory",
+    "type": "library",
+    "license": "LGPL 3",
+    "authors": [
+        {
+            "name": "alphayax",
+            "email": "alphayax@gmail.com"
+        }
+    ],
+    "minimum-stability": "dev",
+    "require": {},
+    "autoload": {
+        "psr-4": {
+            "alphayax\\rssfs\\" : "src/"
+        }
+    }
+}
