@@ -2,10 +2,17 @@
 require_once 'vendor/autoload.php';
 
 
-header('Content-Type: text/xml; charset=utf-8', true); //set document header content type to be XML
+header('Content-Type: text/xml; charset=utf-8', true);
 
-$a = new \alphayax\rssfs\Item( __DIR__, 'https://inea.alphayax.com:8083');
 
-echo $a->d()->asXML(); //output XML
+$directory = new \alphayax\rssfs\model\Directory( __DIR__);
+$directory->setAccessUrl( 'https://inea.alphayax.com:8083');
+$directory->setTitle('Inea');
+$directory->setDescription('Incoming files');
+$directory->setLanguage('fr-FR');
 
-//var_dump( $_SERVER);
+
+$a = new \alphayax\rssfs\controller\Page( $directory);
+
+echo $a->getXML()->asXML(); //output XML
+
