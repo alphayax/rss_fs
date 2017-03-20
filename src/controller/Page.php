@@ -1,13 +1,15 @@
 <?php
 
 namespace alphayax\rssfs\controller;
+
 use alphayax\rssfs\model\Directory;
 
 /**
  * Class Page
  * @package alphayax\rssfs
  */
-class Page {
+class Page
+{
 
     /** @var \alphayax\rssfs\model\Directory */
     protected $directory;
@@ -16,7 +18,8 @@ class Page {
      * Page constructor.
      * @param \alphayax\rssfs\model\Directory $directory
      */
-    public function __construct(Directory $directory) {
+    public function __construct(Directory $directory)
+    {
         $this->directory = $directory;
         $this->rss = new \SimpleXMLElement('<rss></rss>');
         $this->rss->addAttribute('version', '2.0');
@@ -27,8 +30,8 @@ class Page {
     /**
      *
      */
-    protected function initRssHead() {
-
+    protected function initRssHead()
+    {
         $this->rss->addChild('channel'); //add channel node
         $this->rss->addChild('title', $this->directory->getTitle());
         $this->rss->addChild('description', $this->directory->getDescription());
@@ -42,35 +45,55 @@ class Page {
         $this->rss->addChild('generator', 'RssFs');
     }
 
-    protected function addFiles() {
-
-
+    /**
+     * Add the files in the directory
+     */
+    protected function addFiles()
+    {
         $dir = new \DirectoryIterator($this->directory->getDirectoryAd());
         foreach ($dir as $fileinfo) {
-            if ($fileinfo->isDot()) {
-                continue;
-            }
-
-            $item = $this->rss->addChild('item');
-
-            $item->addChild('title', $fileinfo->getBasename()); //add title node under item
-            $item->addChild('link', $this->directory->getAccessUrl() . '/' . $fileinfo->getBasename());
-            $guid = $item->addChild('guid', md5($fileinfo->getRealPath()));
-            $guid->addAttribute('isPermaLink', 'false');
-
-            $item->addChild('description', '<![CDATA[' . htmlentities($fileinfo->getBasename()) . ']]>');
-
-            $date_rfc = gmdate(DATE_RFC2822, $fileinfo->getCTime());
-            $item->addChild('pubDate', $date_rfc);
+            $this->addFile($fileinfo);
         }
+    }
+
+    /**
+     * @param \DirectoryIterator $fileinfo
+     */
+    protected function addFile(\DirectoryIterator $fileinfo)
+    {
+        if ($fileinfo->isDir()) {
+            return;
+        }
+
+        if ($fileinfo->isDot()) {
+            return;
+        }
+
+        $item = $this->rss->addChild('item');
+
+        $item->addChild('title', $fileinfo->getBasename()); //add title node under item
+        $item->addChild('link', $this->directory->getAccessUrl() . '/' . $fileinfo->getBasename());
+        $guid = $item->addChild('guid', md5($fileinfo->getRealPath()));
+        $guid->addAttribute('isPermaLink', 'false');
+
+        $item->addChild('description', '<![CDATA[' . htmlentities($fileinfo->getBasename()) . ']]>');
+
+        $date_rfc = gmdate(DATE_RFC2822, $fileinfo->getCTime());
+        $item->addChild('pubDate', $date_rfc);
     }
 
     /**
      * @return \SimpleXMLElement
      */
-    public function getXML() {
+    public function getXML()
+    {
+        return $this->rss->asXML();
+    }
 
-        return $this->rss;
+    public function display()
+    {
+        header('Content-Type: text/xml; charset=utf-8', true);
+        echo $this->getXML();
     }
 
 }
