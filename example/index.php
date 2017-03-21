@@ -8,6 +8,6 @@ $directory->setDescription('Incoming files');
 $directory->setLanguage('fr-FR');
 
 
-$a = new \alphayax\rssfs\controller\Page( $directory);
+$a = new \alphayax\rssfs\controller\Page( $directory, true);
 $a->display();
 
