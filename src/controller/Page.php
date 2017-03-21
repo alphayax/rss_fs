@@ -77,10 +77,13 @@ class Page
             return;
         }
 
+        $file_rdi = str_replace($this->directory->getDirectoryAd(), '', $fileInfo->getRealPath());
+
+
         $item = $this->rss->addChild('item');
 
-        $item->addChild('title', $fileInfo->getBasename()); //add title node under item
-        $item->addChild('link', $this->directory->getAccessUrl() . '/' . $fileInfo->getBasename());
+        $item->addChild('title', $fileInfo->getBasename());
+        $item->addChild('link', $this->directory->getAccessUrl() . $file_rdi);
         $guid = $item->addChild('guid', md5($fileInfo->getRealPath()));
         $guid->addAttribute('isPermaLink', 'false');
 
