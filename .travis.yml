@@ -9,7 +9,7 @@ install:
   - composer dump-autoload
 
 script:
-  - php vendor/bin/phpunit -c phpunit.dist.xml
+  - php vendor/bin/phpunit -c phpunit.xml
 
 after_success:
   - travis_retry php vendor/bin/codacycoverage clover clover.xml
