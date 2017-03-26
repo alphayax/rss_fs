@@ -16,6 +16,9 @@ class Page
     /** @var bool */
     protected $includeSubFolders;
 
+    /** @var \SimpleXMLElement */
+    protected $rss;
+
     /**
      * Page constructor.
      * @param \alphayax\rssfs\model\Directory $directory
@@ -25,10 +28,6 @@ class Page
     {
         $this->directory = $directory;
         $this->includeSubFolders = $includeSubFolder;
-        $this->rss = new \SimpleXMLElement('<rss></rss>');
-        $this->rss->addAttribute('version', '2.0');
-        $this->initRssHead();
-        $this->addFilesFromDirectory($this->directory->getDirectoryAd());
     }
 
     /**
@@ -94,10 +93,24 @@ class Page
     }
 
     /**
+     * Explore directory and generate RSS
+     */
+    protected function explore()
+    {
+        $this->rss = new \SimpleXMLElement('<rss></rss>');
+        $this->rss->addAttribute('version', '2.0');
+        $this->initRssHead();
+        $this->addFilesFromDirectory($this->directory->getDirectoryAd());
+    }
+
+    /**
      * @return \SimpleXMLElement
      */
     public function getXML()
     {
+        if (empty($this->rss)) {
+            $this->explore();
+        }
         return $this->rss->asXML();
     }
 

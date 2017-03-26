@@ -11,6 +11,10 @@
     ],
     "minimum-stability": "dev",
     "require": {},
+    "require-dev": {
+        "phpunit/phpunit": "^6.0.10",
+        "codacy/coverage": "dev-master"
+    },
     "autoload": {
         "psr-4": {
             "alphayax\\rssfs\\" : "src/"

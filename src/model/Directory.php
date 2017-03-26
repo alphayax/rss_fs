@@ -5,13 +5,13 @@ namespace alphayax\rssfs\model;
 class Directory
 {
     /** @var string */
-    protected $directory_ad;
+    protected $directory_ad = '';
 
     /** @var string */
-    protected $accessUrl;
+    protected $accessUrl = '';
 
     /** @var string */
-    protected $title;
+    protected $title = '';
 
     /** @var string */
     protected $description = '';
@@ -25,7 +25,7 @@ class Directory
      */
     public function __construct(string $directory_ad)
     {
-        $this->directory_ad = realpath($directory_ad);
+        $this->setDirectoryAd($directory_ad);
     }
 
     /**
@@ -41,7 +41,7 @@ class Directory
      */
     public function setDirectoryAd(string $directory_ad)
     {
-        $this->directory_ad = $directory_ad;
+        $this->directory_ad = realpath($directory_ad);
     }
 
     /**
